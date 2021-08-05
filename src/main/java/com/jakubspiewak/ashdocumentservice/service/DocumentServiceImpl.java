@@ -1,30 +1,32 @@
 package com.jakubspiewak.ashdocumentservice.service;
 
+import com.jakubspiewak.ashapimodellib.model.document.ApiDocumentCreateRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-public class DocumentServiceImpl implements DocumentService {
+class DocumentServiceImpl implements DocumentService {
+
     private final DocumentRepository documentRepository;
+    private final DocumentMapper documentMapper;
 
     @Override
-    public void save(Object request) {
-//        documentRepository.save();
+    public void save(ApiDocumentCreateRequest request) {
+        final var entity = documentMapper.fromCreateRequestToEntity(request);
+
+        documentRepository.save(entity);
     }
 
     @Override
     public void delete(UUID id) {
-
-    }
-
-    @Override
-    public void get(UUID id) {
-
+        documentRepository.deleteById(id);
     }
 
     @Override

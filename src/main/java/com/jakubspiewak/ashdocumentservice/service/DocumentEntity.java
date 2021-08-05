@@ -7,11 +7,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.util.Date;
 import java.util.UUID;
+
+import static javax.persistence.EnumType.STRING;
 
 @Entity
 @Table(name = "document_table")
@@ -19,19 +22,23 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DocumentEntity {
+class DocumentEntity {
+
     @Id
     @GeneratedValue
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "owner_id")
-    private UUID ownerId;
+    @Column(name = "file_id")
+    private UUID fileId;
 
-    @Column(name = "file_name")
-    private String fileName;
+    @Column(name = "member_of_id")
+    private UUID referenceId;
 
-    @Column(name = "file")
-    @Lob
-    private byte[] file;
+    @Enumerated(STRING)
+    @Column(name = "type")
+    private DocumentType type;
+
+    @Column(name = "date")
+    private Date date;
 }
