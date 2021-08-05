@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -26,15 +28,10 @@ public class DocumentController {
     private final DocumentService documentService;
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody ApiDocumentCreateRequest request) {
-        log.info("POST: [{}]", request);
-        if (request.getFile() == null) return ResponseEntity.status(OK).build();
-        if (request.getFile().length == 0) return ResponseEntity.status(OK).build();
+    public ResponseEntity<UUID> save(@RequestBody ApiDocumentCreateRequest request) {
+        final var id = documentService.save(request);
 
-        log.info("Saving [{}]", request);
-        documentService.save(request);
-
-        return ResponseEntity.status(CREATED).build();
+        return ResponseEntity.status(CREATED).body(id);
     }
 
     @GetMapping(produces = "application/pdf")

@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.UUID;
 
 public interface DocumentService {
-    void save(ApiDocumentCreateRequest request);
+    UUID save(ApiDocumentCreateRequest request);
 
     void delete(UUID id);
 

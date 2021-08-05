@@ -1,19 +1,13 @@
 package com.jakubspiewak.ashdocumentservice.service;
 
-import com.jakubspiewak.ashapimodellib.model.document.ApiDocumentCreateRequest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.UUID;
-
 import static com.jakubspiewak.ashdocumentservice.service.DocumentTestHelper.UUID_0;
-import static com.jakubspiewak.ashdocumentservice.service.DocumentTestHelper.UUID_1;
 import static com.jakubspiewak.ashdocumentservice.service.DocumentTestHelper.createApiDocumentCreateRequest;
-import static com.jakubspiewak.ashdocumentservice.service.DocumentType.EXPENSE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -25,8 +19,13 @@ class DocumentServiceImplTest {
 
     private final DocumentMapper documentMapper = Mappers.getMapper(DocumentMapper.class);
     private final DocumentRepository documentRepository = mock(DocumentRepository.class);
+    private final FileService fileService = mock(FileService.class);
 
-    private final DocumentService documentService = new DocumentServiceImpl(documentRepository, documentMapper);
+    private final DocumentService documentService = new DocumentServiceImpl(
+            documentRepository,
+            documentMapper,
+            fileService
+    );
 
     @Test
     void save() {
