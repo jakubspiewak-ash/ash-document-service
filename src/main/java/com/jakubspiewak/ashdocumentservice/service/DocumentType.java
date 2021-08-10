@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 enum DocumentType {
-    EXPENSE("EXPENSE"),
-    ;
+  EXPENSE("EXPENSE"),
+  ;
 
-    private final String name;
+  private final String name;
 
-    @Override
-    public String toString() {
-        return name;
-    }
+  @Override
+  public String toString() {
+    return name;
+  }
 }

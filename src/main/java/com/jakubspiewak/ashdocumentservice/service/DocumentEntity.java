@@ -24,21 +24,21 @@ import static javax.persistence.EnumType.STRING;
 @NoArgsConstructor
 class DocumentEntity {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private UUID id;
+  @Id
+  @GeneratedValue
+  @Column(name = "id")
+  private UUID id;
 
-    @Column(name = "file_id")
-    private UUID fileId;
+  @Column(name = "file_id")
+  private UUID fileId;
 
-    @Column(name = "member_of_id")
-    private UUID referenceId;
+  @Column(name = "member_of_id")
+  private UUID referenceId;
 
-    @Enumerated(STRING)
-    @Column(name = "type")
-    private DocumentType type;
+  @Enumerated(STRING)
+  @Column(name = "type")
+  private DocumentType type;
 
-    @Column(name = "date")
-    private Date date;
+  @Column(name = "date")
+  private Date date;
 }

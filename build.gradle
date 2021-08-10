@@ -56,6 +56,9 @@ dependencies {
     // postgres
     implementation 'org.postgresql:postgresql'
 
+    // format
+    implementation 'com.google.googlejavaformat:google-java-format:1.11.0'
+
     // test
     testImplementation 'org.mockito:mockito-core:2.1.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'

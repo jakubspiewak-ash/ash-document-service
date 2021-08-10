@@ -4,7 +4,6 @@ import com.jakubspiewak.ashapimodellib.model.document.ApiDocumentCreateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,22 +24,21 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class DocumentController {
 
-    private final DocumentService documentService;
+  private final DocumentService documentService;
 
-    @PostMapping
-    public ResponseEntity<UUID> save(@RequestBody ApiDocumentCreateRequest request) {
-        final var id = documentService.save(request);
+  @PostMapping
+  public ResponseEntity<UUID> save(@RequestBody ApiDocumentCreateRequest request) {
+    final var id = documentService.save(request);
 
-        return ResponseEntity.status(CREATED).body(id);
-    }
+    return ResponseEntity.status(CREATED).body(id);
+  }
 
-    @GetMapping(produces = "application/pdf")
-    public ResponseEntity<Object> get(
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size) {
-        var pageable = PageRequest.of(page,size, DESC, "date");
-        final var entity = documentService.get(pageable);
+  @GetMapping(produces = "application/pdf")
+  public ResponseEntity<Object> get(
+      @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+    var pageable = PageRequest.of(page, size, DESC, "date");
+    final var entity = documentService.get(pageable);
 
-        return ResponseEntity.status(OK).body(entity);
-    }
+    return ResponseEntity.status(OK).body(entity);
+  }
 }

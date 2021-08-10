@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 
-@FeignClient
+@FeignClient("ash-file-service")
 public interface FileService {
 
     @PostMapping

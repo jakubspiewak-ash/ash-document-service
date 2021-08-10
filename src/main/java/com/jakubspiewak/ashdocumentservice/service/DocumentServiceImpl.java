@@ -16,7 +16,6 @@ import java.util.UUID;
 class DocumentServiceImpl implements DocumentService {
 
     private final DocumentRepository documentRepository;
-    private final DocumentMapper documentMapper;
     private final FileService fileService;
 
     @Override
@@ -26,7 +25,7 @@ class DocumentServiceImpl implements DocumentService {
         final var entity = DocumentEntity.builder()
                 .date(request.getDate())
                 .fileId(fileId)
-                .referenceId(null)
+                .referenceId(request.getReferenceId())
                 .type(DocumentType.valueOf(request.getType()))
                 .build();
 
@@ -54,7 +53,7 @@ class DocumentServiceImpl implements DocumentService {
     }
 
     private ApiFileCreateRequest createApiFileRequest(final ApiDocumentCreateRequest request) {
-        final var fileName = String.format("%s", request.getDate().toString());
+        final var fileName = String.format("%s.pdf", request.getDate().toString());
         return ApiFileCreateRequest.builder()
                 .file(request.getFile())
                 .fileName(fileName)
