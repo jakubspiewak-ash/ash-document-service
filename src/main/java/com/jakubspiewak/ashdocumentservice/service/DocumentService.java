@@ -1,6 +1,7 @@
 package com.jakubspiewak.ashdocumentservice.service;
 
 import com.jakubspiewak.ashapimodellib.model.document.ApiDocumentCreateRequest;
+import com.jakubspiewak.ashapimodellib.model.document.ApiDocumentGetResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -11,5 +12,5 @@ public interface DocumentService {
 
   void delete(UUID id);
 
-  Page<DocumentEntity> get(PageRequest request);
+  Page<ApiDocumentGetResponse> get(PageRequest request);
 }

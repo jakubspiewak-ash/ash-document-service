@@ -5,13 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Date;
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static javax.persistence.EnumType.STRING;
@@ -40,5 +35,5 @@ class DocumentEntity {
   private DocumentType type;
 
   @Column(name = "date")
-  private Date date;
+  private LocalDate date;
 }

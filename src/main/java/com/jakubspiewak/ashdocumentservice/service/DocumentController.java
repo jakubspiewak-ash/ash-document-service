@@ -1,16 +1,13 @@
 package com.jakubspiewak.ashdocumentservice.service;
 
 import com.jakubspiewak.ashapimodellib.model.document.ApiDocumentCreateRequest;
+import com.jakubspiewak.ashapimodellib.model.document.ApiDocumentGetResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -34,11 +31,10 @@ public class DocumentController {
   }
 
   @GetMapping(produces = "application/pdf")
-  public ResponseEntity<Object> get(
-      @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+  public ResponseEntity<Page<ApiDocumentGetResponse>> get(
+          @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
     var pageable = PageRequest.of(page, size, DESC, "date");
     final var entity = documentService.get(pageable);
-
     return ResponseEntity.status(OK).body(entity);
   }
 }

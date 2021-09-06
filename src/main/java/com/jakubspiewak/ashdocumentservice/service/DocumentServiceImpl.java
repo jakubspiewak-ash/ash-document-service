@@ -1,6 +1,7 @@
 package com.jakubspiewak.ashdocumentservice.service;
 
 import com.jakubspiewak.ashapimodellib.model.document.ApiDocumentCreateRequest;
+import com.jakubspiewak.ashapimodellib.model.document.ApiDocumentGetResponse;
 import com.jakubspiewak.ashapimodellib.model.file.ApiFileCreateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,48 +16,55 @@ import java.util.UUID;
 @RequiredArgsConstructor
 class DocumentServiceImpl implements DocumentService {
 
-    private final DocumentRepository documentRepository;
-    private final FileService fileService;
+  private final DocumentRepository documentRepository;
+  private final FileService fileService;
 
-    @Override
-    public UUID save(ApiDocumentCreateRequest request) {
-        final var fileId = saveFile(request);
+  private static ApiDocumentGetResponse mapToResponse(DocumentEntity entity) {
+    return ApiDocumentGetResponse.builder()
+        .referenceId(entity.getReferenceId())
+        .type(entity.getType().toString())
+        .fileId(entity.getFileId())
+        .date(entity.getDate())
+        .build();
+  }
 
-        final var entity = DocumentEntity.builder()
-                .date(request.getDate())
-                .fileId(fileId)
-                .referenceId(request.getReferenceId())
-                .type(DocumentType.valueOf(request.getType()))
-                .build();
+  @Override
+  public UUID save(ApiDocumentCreateRequest request) {
+    final var fileId = saveFile(request);
 
-        final var createdEntity = documentRepository.save(entity);
+    final var entity =
+        DocumentEntity.builder()
+            .date(request.getDate())
+            .fileId(fileId)
+            .referenceId(request.getReferenceId())
+            .type(DocumentType.valueOf(request.getType()))
+            .build();
 
-        return createdEntity.getId();
-    }
+    final var createdEntity = documentRepository.save(entity);
 
-    @Override
-    public void delete(final UUID id) {
-        final var entity = documentRepository.findById(id).orElseThrow();
-        fileService.delete(entity.getFileId());
+    return createdEntity.getId();
+  }
 
-        documentRepository.deleteById(id);
-    }
+  @Override
+  public void delete(final UUID id) {
+    final var entity = documentRepository.findById(id).orElseThrow();
+    fileService.delete(entity.getFileId());
 
-    @Override
-    public Page<DocumentEntity> get(final PageRequest request) {
-        return documentRepository.findAll(request);
-    }
+    documentRepository.deleteById(id);
+  }
 
-    private UUID saveFile(final ApiDocumentCreateRequest request) {
-        final var createFileRequest = createApiFileRequest(request);
-        return fileService.save(createFileRequest);
-    }
+  @Override
+  public Page<ApiDocumentGetResponse> get(final PageRequest request) {
+    return documentRepository.findAll(request).map(DocumentServiceImpl::mapToResponse);
+  }
 
-    private ApiFileCreateRequest createApiFileRequest(final ApiDocumentCreateRequest request) {
-        final var fileName = String.format("%s.pdf", request.getDate().toString());
-        return ApiFileCreateRequest.builder()
-                .file(request.getFile())
-                .fileName(fileName)
-                .build();
-    }
+  private UUID saveFile(final ApiDocumentCreateRequest request) {
+    final var createFileRequest = createApiFileRequest(request);
+    return fileService.save(createFileRequest);
+  }
+
+  private ApiFileCreateRequest createApiFileRequest(final ApiDocumentCreateRequest request) {
+    final var fileName = String.format("%s.pdf", request.getDate().toString());
+    return ApiFileCreateRequest.builder().file(request.getFile()).fileName(fileName).build();
+  }
 }
