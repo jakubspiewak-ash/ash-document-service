@@ -30,11 +30,13 @@ public class DocumentController {
     return ResponseEntity.status(CREATED).body(id);
   }
 
-  @GetMapping(produces = "application/pdf")
+  @GetMapping
   public ResponseEntity<Page<ApiDocumentGetResponse>> get(
-          @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-    var pageable = PageRequest.of(page, size, DESC, "date");
-    final var entity = documentService.get(pageable);
-    return ResponseEntity.status(OK).body(entity);
+      @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+    log.info("Getting documents page...");
+    var pageable = PageRequest.of(page != null ? page : 0, size != null ? size : 1, DESC, "date");
+    final var responses = documentService.get(pageable);
+    return ResponseEntity.status(OK).body(responses);
   }
 }
+kc bq
