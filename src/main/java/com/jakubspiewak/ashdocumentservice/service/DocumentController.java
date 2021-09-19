@@ -39,4 +39,3 @@ public class DocumentController {
     return ResponseEntity.status(OK).body(responses);
   }
 }
-kc bq
